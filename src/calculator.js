@@ -92,7 +92,7 @@ function main() {
   const operation = args[0].toLowerCase();
   const numbers = args.slice(1).map(arg => {
     const num = parseFloat(arg);
-    if (isNaN(num)) {
+    if (!Number.isFinite(num)) {
       console.error(`Error: "${arg}" is not a valid number`);
       process.exit(1);
     }

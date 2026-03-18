@@ -7,6 +7,9 @@
  * - Subtraction (-)
  * - Multiplication (*)
  * - Division (/)
+ * - Modulo (%)
+ * - Exponentiation (^)
+ * - Square Root (√)
  */
 
 function add(...numbers) {
@@ -30,7 +33,27 @@ function divide(first, ...rest) {
   }, first);
 }
 
-module.exports = { add, subtract, multiply, divide };
+function modulo(first, ...rest) {
+  return rest.reduce((result, num) => {
+    if (num === 0) {
+      throw new Error('Cannot perform modulo with zero');
+    }
+    return result % num;
+  }, first);
+}
+
+function power(base, exponent) {
+  return Math.pow(base, exponent);
+}
+
+function squareRoot(n) {
+  if (n < 0) {
+    throw new Error('Cannot calculate square root of a negative number');
+  }
+  return Math.sqrt(n);
+}
+
+module.exports = { add, subtract, multiply, divide, modulo, power, squareRoot };
 
 const args = process.argv.slice(2);
 
@@ -45,12 +68,18 @@ Operations:
   subtract   - Subtraction (-)
   multiply   - Multiplication (*)
   divide     - Division (/)
+  modulo     - Modulo (%)
+  power      - Exponentiation (^)
+  sqrt       - Square Root (√)
 
 Examples:
   calculator.js add 5 3 2
   calculator.js subtract 10 3 2
   calculator.js multiply 4 5 2
   calculator.js divide 100 5 2
+  calculator.js modulo 17 5
+  calculator.js power 2 8
+  calculator.js sqrt 16
   `);
 }
 
@@ -90,6 +119,21 @@ function main() {
         break;
       case 'divide':
         result = divide(...numbers);
+        break;
+      case 'modulo':
+        result = modulo(...numbers);
+        break;
+      case 'power':
+        if (numbers.length !== 2) {
+          throw new Error('Power operation requires exactly 2 numbers');
+        }
+        result = power(...numbers);
+        break;
+      case 'sqrt':
+        if (numbers.length !== 1) {
+          throw new Error('Square root operation requires exactly 1 number');
+        }
+        result = squareRoot(...numbers);
         break;
       default:
         console.error(`Error: Unknown operation "${operation}"`);
